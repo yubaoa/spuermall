@@ -71,13 +71,26 @@ export default {
     this.getHomeGoods('pop')
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
-
-
+    const refresh = this.debounce(this.$refs.scroll.refresh, 100)
+    this.$bus.$on('scrollRefresh', () => {
+      refresh()
+      //this.$refs.scroll && this.$refs.scroll.refresh()
+    })
   },
   methods:{
     /**
      * 事件监听相关
      */
+    
+    debounce(func, dely){
+      let timer = null
+      return function (...args) {
+        if(timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+          func.apply(func, args)
+        },dely)
+      }
+    },
     tabClick(index){
       //console.log(index);
       switch(index){
@@ -117,22 +130,15 @@ export default {
   getHomeGoods(type){
     const page = this.goods[type].page + 1
     getHomeGoods(type,page).then(res => {
-      console.log(res);
+      //console.log(res);
       this.goods[type].list.push(...res.list)
       this.goods[type].page+=1
-      this.$refs.scroll.finishPullUp()
+      this.$refs.scroll.finishPullUp()  
     }
 
   )
   }
-  // getHomeGoods(type) {
-  //       const page = this.goods[type].page + 1
-  //       getHomeGoods(type, page).then(res => {
-  //         this.goods[type].list.push(...res.data.list)
-  //         this.goods[type].page += 1
-  //         this.$refs.scroll.finishPullUp()
-  //       })
-  //     }
+
 }}
 </script>
 <style scoped>

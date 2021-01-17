@@ -30,13 +30,14 @@ import BScroll from 'better-scroll';
 
     ,
     mounted() {
+      
       // 1.创建BScroll
       this.scroll = new BScroll(this.$refs.wrapper, {
         click:true,
         probeType:this.probeType,
         pullUpLoad:this.pullUpLoad
       })
-
+    // console.log(this.scroll.scrollerHeight);
       // 2.监听滚动的位置
       this.scroll.on("scroll",position =>{
         // console.log(position);
@@ -54,6 +55,10 @@ import BScroll from 'better-scroll';
       },
       finishPullUp(){
         this.scroll.finishPullUp()
+      },
+      refresh(){
+        console.log('asasd')
+        this.scroll && this.scroll.refresh()
       }
     }
   }
